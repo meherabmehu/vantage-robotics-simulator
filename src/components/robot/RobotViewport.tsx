@@ -1,12 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useRobotStore } from "../../state/robotStore";
 import SceneManager from "../../three/SceneManager";
-import JointPanel from "./JointPanel";
-import CartesianPanel from "./CartesianPanel";
 import KeyboardController from "../../input/KeyboardController";
 import MotionManager from "../../core/MotionManager";
-import CartesianController from "../../core/CartesianController";
-import IKDebugPanel from "./IKDebugPanel";
+import LeftControlPanel from "./LeftControlPanel";
+import RightStatusPanel from "./RightStatusPanel";
 
 export default function RobotViewport() {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -19,6 +17,7 @@ export default function RobotViewport() {
     if (!viewportRef.current) return;
 
     const scene = new SceneManager(viewportRef.current);
+
     sceneRef.current = scene;
 
     keyboardRef.current = new KeyboardController(
@@ -51,17 +50,16 @@ export default function RobotViewport() {
     value: number
   ) => {
     MotionManager.setJoint(index, value);
+
     sceneRef.current?.setJoint(index, value);
   };
 
   const handleHome = () => {
     sceneRef.current?.home();
-    MotionManager.home();
-    resetRobot();
-  };
 
-  const refreshTarget = () => {
-    sceneRef.current?.refreshTarget();
+    MotionManager.home();
+
+    resetRobot();
   };
 
   return (
@@ -74,191 +72,31 @@ export default function RobotViewport() {
         overflow: "hidden",
       }}
     >
-      {/* ================= LEFT PANEL ================= */}
+      {/* LEFT */}
 
-      <div
-        style={{
-          width: "260px",
-          flexShrink: 0,
+      <LeftControlPanel
+        scene={sceneRef.current}
+        onHome={handleHome}
+      />
 
-          background: "#232933",
-
-          borderRadius: "12px",
-
-          padding: "18px",
-
-          display: "flex",
-          flexDirection: "column",
-
-          overflow: "hidden",
-        }}
-      >
-        <h3
-          style={{
-            color: "#f4b942",
-            marginBottom: "18px",
-            textAlign: "center",
-          }}
-        >
-          Joint Control
-        </h3>
-
-        <button
-          onClick={handleHome}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "12px",
-            background: "#f4b942",
-            color: "#111",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: 700,
-          }}
-        >
-          HOME
-        </button>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "8px",
-            marginBottom: "18px",
-          }}
-        >
-          <button onClick={() => sceneRef.current?.isoView()}>
-            ISO
-          </button>
-
-          <button onClick={() => sceneRef.current?.frontView()}>
-            FRONT
-          </button>
-
-          <button onClick={() => sceneRef.current?.backView()}>
-            BACK
-          </button>
-
-          <button onClick={() => sceneRef.current?.topView()}>
-            TOP
-          </button>
-
-          <button onClick={() => sceneRef.current?.leftView()}>
-            LEFT
-          </button>
-
-          <button onClick={() => sceneRef.current?.rightView()}>
-            RIGHT
-          </button>
-        </div>
-
-        {/* Fixed Top Controls */}
-
-        <CartesianPanel
-          onMoveXPositive={() => {
-            CartesianController.moveXPositive();
-            refreshTarget();
-          }}
-          onMoveXNegative={() => {
-            CartesianController.moveXNegative();
-            refreshTarget();
-          }}
-          onMoveYPositive={() => {
-            CartesianController.moveYPositive();
-            refreshTarget();
-          }}
-          onMoveYNegative={() => {
-            CartesianController.moveYNegative();
-            refreshTarget();
-          }}
-          onMoveZPositive={() => {
-            CartesianController.moveZPositive();
-            refreshTarget();
-          }}
-          onMoveZNegative={() => {
-            CartesianController.moveZNegative();
-            refreshTarget();
-          }}
-        />
-
-        <IKDebugPanel />
-
-        {/* Scroll Only Here */}
-
-        <div
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            marginTop: "12px",
-            paddingRight: "6px",
-          }}
-        >
-          <JointPanel
-            onJointChange={handleJointChange}
-          />
-        </div>
-      </div>
-
-      {/* ================= ROBOT VIEW ================= */}
+      {/* CENTER */}
 
       <div
         ref={viewportRef}
         style={{
           flex: 1,
           minWidth: 0,
-
           borderRadius: "12px",
-
           overflow: "hidden",
-
           background: "#181c22",
         }}
       />
 
-      {/* ================= RIGHT PANEL ================= */}
+      {/* RIGHT */}
 
-      <div
-        style={{
-          width: "280px",
-
-          flexShrink: 0,
-
-          background: "#232933",
-
-          borderRadius: "12px",
-
-          padding: "18px",
-
-          color: "white",
-
-          overflow: "hidden",
-        }}
-      >
-        <h3
-          style={{
-            color: "#f4b942",
-            textAlign: "center",
-            marginBottom: "20px",
-          }}
-        >
-          Robot Status
-        </h3>
-
-        <p
-          style={{
-            opacity: 0.8,
-            textAlign: "center",
-            lineHeight: 1.8,
-          }}
-        >
-          Status panel redesign
-          <br />
-          will be added
-          <br />
-          in the next step.
-        </p>
-      </div>
+      <RightStatusPanel
+        onJointChange={handleJointChange}
+      />
     </div>
   );
 }

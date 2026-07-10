@@ -21,20 +21,17 @@ export default function LeftControlPanel({
       style={{
         width: "280px",
         flexShrink: 0,
-
         background: "#232933",
-
         borderRadius: "12px",
-
         padding: "18px",
-
         display: "flex",
         flexDirection: "column",
-
         overflowY: "auto",
         overflowX: "hidden",
       }}
     >
+      {/* HEADER */}
+
       <h3
         style={{
           color: "#f4b942",
@@ -42,31 +39,188 @@ export default function LeftControlPanel({
           marginBottom: "18px",
         }}
       >
-        Manual Control
+        Mission Control
       </h3>
+
+      {/* HOME */}
 
       <button
         onClick={onHome}
         style={{
           width: "100%",
           padding: "10px",
-          marginBottom: "12px",
+          marginBottom: "18px",
           background: "#f4b942",
           color: "#111",
           border: "none",
           borderRadius: "8px",
+          cursor: "pointer",
           fontWeight: 700,
         }}
       >
         HOME
       </button>
 
+      {/* GO TO XYZ */}
+
+<div
+  style={{
+    background: "#1d222b",
+    borderRadius: "10px",
+    padding: "14px",
+    marginBottom: "18px",
+  }}
+>
+  <div
+    style={{
+      color: "#f4b942",
+      fontWeight: 700,
+      marginBottom: "12px",
+    }}
+  >
+    GO TO XYZ
+  </div>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "45px 1fr",
+      gap: "8px",
+      alignItems: "center",
+      marginBottom: "8px",
+    }}
+  >
+    <span>X</span>
+
+    <input
+      type="number"
+      placeholder="0.000"
+      style={{
+        padding: "6px",
+        borderRadius: "6px",
+        border: "1px solid #444",
+        background: "#11161d",
+        color: "white",
+      }}
+    />
+
+    <span>Y</span>
+
+    <input
+      type="number"
+      placeholder="0.000"
+      style={{
+        padding: "6px",
+        borderRadius: "6px",
+        border: "1px solid #444",
+        background: "#11161d",
+        color: "white",
+      }}
+    />
+
+    <span>Z</span>
+
+    <input
+      type="number"
+      placeholder="0.000"
+      style={{
+        padding: "6px",
+        borderRadius: "6px",
+        border: "1px solid #444",
+        background: "#11161d",
+        color: "white",
+      }}
+    />
+  </div>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: "8px",
+      marginTop: "12px",
+    }}
+  >
+    <button>
+      GO
+    </button>
+
+    <button>
+      RESET
+    </button>
+  </div>
+</div>
+
+{/* AUTONOMOUS PIN */}
+
+<div
+  style={{
+    background: "#1d222b",
+    borderRadius: "10px",
+    padding: "14px",
+    marginBottom: "18px",
+  }}
+>
+  <div
+    style={{
+      color: "#f4b942",
+      fontWeight: 700,
+      marginBottom: "12px",
+    }}
+  >
+    AUTONOMOUS PIN
+  </div>
+
+  <input
+    type="text"
+    placeholder="Enter PIN (e.g. 123456)"
+    style={{
+      width: "100%",
+      padding: "8px",
+      marginBottom: "10px",
+      borderRadius: "6px",
+      border: "1px solid #444",
+      background: "#11161d",
+      color: "white",
+      boxSizing: "border-box",
+    }}
+  />
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: "8px",
+    }}
+  >
+    <button>
+      START
+    </button>
+
+    <button>
+      STOP
+    </button>
+  </div>
+</div>
+
+      {/* CAMERA */}
+
+      <h4
+        style={{
+          color: "#f4b942",
+          marginBottom: "10px",
+          marginTop: "2px",
+        }}
+      >
+        Camera Views
+      </h4>
+
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
           gap: "8px",
-          marginBottom: "18px",
+          marginBottom: "20px",
         }}
       >
         <button onClick={() => scene?.isoView()}>
@@ -93,6 +247,17 @@ export default function LeftControlPanel({
           RIGHT
         </button>
       </div>
+
+      {/* CARTESIAN */}
+
+      <h4
+        style={{
+          color: "#f4b942",
+          marginBottom: "10px",
+        }}
+      >
+        Cartesian Jog
+      </h4>
 
       <CartesianPanel
         onMoveXPositive={() => {
@@ -121,32 +286,56 @@ export default function LeftControlPanel({
         }}
       />
 
+      {/* IK */}
+
+      <h4
+        style={{
+          color: "#f4b942",
+          marginBottom: "10px",
+          marginTop: "18px",
+        }}
+      >
+        IK Debug
+      </h4>
+
       <IKDebugPanel />
+
+      {/* UPCOMING */}
 
       <div
         style={{
-          marginTop: 20,
-          padding: 12,
-          borderRadius: 8,
           background: "#1d222b",
-          color: "#9ca3af",
-          fontSize: 13,
+          borderRadius: "10px",
+          padding: "14px",
+          marginTop: "20px",
         }}
       >
-        <strong>Coming Next</strong>
-
-        <ul
+        <div
           style={{
-            paddingLeft: 18,
-            marginTop: 10,
+            color: "#f4b942",
+            fontWeight: 700,
+            marginBottom: "10px",
           }}
         >
-          <li>Autonomous PIN</li>
-          <li>Joystick</li>
-          <li>Voice</li>
-          <li>Agent</li>
-        </ul>
+          Upcoming Modules
+        </div>
+
+        <div
+          style={{
+            fontSize: "13px",
+            lineHeight: 1.9,
+            color: "#c9ced8",
+          }}
+        >
+          • Autonomous PIN
+          <br />
+          • Virtual Joystick
+          <br />
+          • Voice Control
+          <br />
+          • AI Agent
+        </div>
       </div>
     </div>
   );
-}
+}   
