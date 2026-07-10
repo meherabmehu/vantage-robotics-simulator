@@ -172,6 +172,34 @@ export default function RobotViewport() {
     </div>
   </div>
 </div>
+     {/* Keyboard Help */}
+
+<div
+  style={{
+    position: "absolute",
+    left: "50%",
+    bottom: 18,
+    transform: "translateX(-50%)",
+    display: "flex",
+    gap: "10px",
+    padding: "10px 14px",
+    borderRadius: "10px",
+    background: "rgba(17,22,29,0.92)",
+    border: "1px solid #2c3948",
+    color: "#dbe5ef",
+    fontSize: "12px",
+    pointerEvents: "none",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  }}
+>
+  <span>W/S → X</span>
+  <span>A/D → Y</span>
+  <span>Q/E → Z</span>
+  <span>R/F → Wrist</span>
+  <span>HOME → Reset</span>
+  <span>ESC → Stop</span>
+</div>
 
       {/* RIGHT */}
 
