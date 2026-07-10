@@ -2,8 +2,10 @@ import { useEffect, useRef } from "react";
 import { useRobotStore } from "../../state/robotStore";
 import SceneManager from "../../three/SceneManager";
 import JointPanel from "./JointPanel";
+import CartesianPanel from "./CartesianPanel";
 import KeyboardController from "../../input/KeyboardController";
 import MotionManager from "../../core/MotionManager";
+import CartesianController from "../../core/CartesianController";
 
 export default function RobotViewport() {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -57,6 +59,10 @@ export default function RobotViewport() {
     resetRobot();
   };
 
+  const refreshTarget = () => {
+    sceneRef.current?.refreshTarget();
+  };
+
   return (
     <div
       style={{
@@ -101,8 +107,6 @@ export default function RobotViewport() {
           HOME
         </button>
 
-        {/* Camera Presets */}
-
         <div
           style={{
             display: "grid",
@@ -135,6 +139,33 @@ export default function RobotViewport() {
             RIGHT
           </button>
         </div>
+
+        <CartesianPanel
+          onMoveXPositive={() => {
+            CartesianController.moveXPositive();
+            refreshTarget();
+          }}
+          onMoveXNegative={() => {
+            CartesianController.moveXNegative();
+            refreshTarget();
+          }}
+          onMoveYPositive={() => {
+            CartesianController.moveYPositive();
+            refreshTarget();
+          }}
+          onMoveYNegative={() => {
+            CartesianController.moveYNegative();
+            refreshTarget();
+          }}
+          onMoveZPositive={() => {
+            CartesianController.moveZPositive();
+            refreshTarget();
+          }}
+          onMoveZNegative={() => {
+            CartesianController.moveZNegative();
+            refreshTarget();
+          }}
+        />
 
         <JointPanel onJointChange={handleJointChange} />
       </div>
