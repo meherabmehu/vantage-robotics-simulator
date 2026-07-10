@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import RobotController from "./RobotController";
 import TCPGizmo from "./TCPGizmo";
+import TCPTrail from "./TCPTrail";
 
 export default class SceneManager {
   private scene: THREE.Scene;
@@ -13,7 +14,9 @@ export default class SceneManager {
   private controller: RobotController;
 
   private zUpRoot: THREE.Group;
+
   private tcpGizmo: TCPGizmo;
+  private tcpTrail: TCPTrail;
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -35,6 +38,7 @@ export default class SceneManager {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
+
     this.renderer.setSize(
       container.clientWidth,
       container.clientHeight
@@ -65,7 +69,11 @@ export default class SceneManager {
     this.scene.add(this.zUpRoot);
 
     this.controller = new RobotController();
+
     this.tcpGizmo = new TCPGizmo(0.08);
+
+    this.tcpTrail = new TCPTrail();
+    this.tcpTrail.addTo(this.scene);
 
     this.loadRobot();
 
@@ -82,13 +90,15 @@ export default class SceneManager {
     const tcp = this.controller.getTCPFrame();
 
     if (tcp) {
-      console.log("TCP Frame Found:", tcp.name);
-
       this.tcpGizmo.object.position.set(0, 0, 0);
 
       tcp.add(this.tcpGizmo.object);
-    } else {
-      console.warn("TCP Frame NOT FOUND");
+
+      const worldPos = new THREE.Vector3();
+      tcp.updateWorldMatrix(true, false);
+      tcp.getWorldPosition(worldPos);
+
+      this.tcpTrail.addPoint(worldPos);
     }
 
     console.log("Robot Loaded");
@@ -96,6 +106,16 @@ export default class SceneManager {
 
   public setJoint(index: number, angle: number) {
     this.controller.setJoint(index, angle);
+
+    const tcp = this.controller.getTCPFrame();
+
+    if (!tcp) return;
+
+    const worldPos = new THREE.Vector3();
+
+    tcp.getWorldPosition(worldPos);
+
+    this.tcpTrail.addPoint(worldPos);
   }
 
   public getJointCount() {
@@ -122,6 +142,8 @@ export default class SceneManager {
 
   public dispose() {
     window.removeEventListener("resize", this.onResize);
+
+    this.tcpTrail.dispose();
 
     this.controls.dispose();
     this.renderer.dispose();
