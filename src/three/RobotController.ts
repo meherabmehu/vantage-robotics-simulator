@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import RobotLoader from "./RobotLoader";
+import { forwardKinematics } from "../core/fk";
+import { useRobotStore } from "../state/robotStore";
 
 const JOINT_NAMES = [
   "joint_1",
@@ -18,6 +20,7 @@ export default class RobotController {
     const loader = new RobotLoader();
 
     this.robot = await loader.load();
+
     return this.robot;
   }
 
@@ -32,13 +35,22 @@ export default class RobotController {
 
     const joint = this.robot.joints[jointName];
 
-    if (!joint) {
-      console.error("Joint not found:", jointName);
-      return;
-    }
+    if (!joint) return;
 
-    // IMPORTANT
+    // Move Robot
     this.robot.setJointValue(jointName, angle);
+
+    // Read latest joint state
+    const joints = [...useRobotStore.getState().joints];
+    joints[index] = angle;
+
+    // FK
+    const tcp = forwardKinematics(joints);
+
+    // Save TCP
+    useRobotStore
+      .getState()
+      .setTCP(tcp.position, tcp.rotation);
 
     this.robot.updateMatrixWorld(true);
   }
@@ -49,6 +61,18 @@ export default class RobotController {
     JOINT_NAMES.forEach((name) => {
       this.robot.setJointValue(name, 0);
     });
+
+    const tcp = forwardKinematics([
+      0, 0, 0, 0, 0, 0, 0,
+    ]);
+
+    useRobotStore
+      .getState()
+      .setAllJoints([0, 0, 0, 0, 0, 0, 0]);
+
+    useRobotStore
+      .getState()
+      .setTCP(tcp.position, tcp.rotation);
 
     this.robot.updateMatrixWorld(true);
   }
