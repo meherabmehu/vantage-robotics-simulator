@@ -1,4 +1,5 @@
 import { useRobotStore } from "../../state/robotStore";
+import { useEventLogStore } from "../../state/eventLogStore";
 import JointPanel from "./JointPanel";
 
 interface Props {
@@ -8,13 +9,11 @@ interface Props {
 export default function RightStatusPanel({
   onJointChange,
 }: Props) {
-  const tcpPosition = useRobotStore(
-    (s) => s.tcpPosition
-  );
+  const tcpPosition = useRobotStore((s) => s.tcpPosition);
 
-  const tcpRotation = useRobotStore(
-    (s) => s.tcpRotation
-  );
+  const tcpRotation = useRobotStore((s) => s.tcpRotation);
+
+  const logs = useEventLogStore((s) => s.logs);
 
   return (
     <div
@@ -31,6 +30,8 @@ export default function RightStatusPanel({
         color: "white",
       }}
     >
+      {/* HEADER */}
+
       <h3
         style={{
           color: "#f4b942",
@@ -40,8 +41,6 @@ export default function RightStatusPanel({
       >
         Robot Status
       </h3>
-
-      {/* HEADER */}
 
       <div
         style={{
@@ -102,7 +101,7 @@ export default function RightStatusPanel({
         </div>
       </div>
 
-      {/* REACH BAR */}
+      {/* REACH */}
 
       <div
         style={{
@@ -167,140 +166,177 @@ export default function RightStatusPanel({
           RZ : {tcpRotation.z.toFixed(2)}
         </div>
       </div>
+
+      {/* ROBOT MODE */}
+
       <div
-  style={{
-    background: "#1d222b",
-    borderRadius: "10px",
-    padding: "14px",
-    marginBottom: "18px",
-  }}
->
-  <div
-    style={{
-      color: "#f4b942",
-      fontWeight: 700,
-      marginBottom: "12px",
-    }}
-  >
-    Robot Mode
-  </div>
+        style={{
+          background: "#1d222b",
+          borderRadius: "10px",
+          padding: "14px",
+          marginBottom: "18px",
+        }}
+      >
+        <div
+          style={{
+            color: "#f4b942",
+            fontWeight: 700,
+            marginBottom: "12px",
+          }}
+        >
+          Robot Mode
+        </div>
 
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      marginBottom: "8px",
-      fontSize: "13px",
-    }}
-  >
-    <span>Current</span>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "8px",
+            fontSize: "13px",
+          }}
+        >
+          <span>Current</span>
 
-    <span
-      style={{
-        color: "#63ffb3",
-        fontWeight: 700,
-      }}
-    >
-      MANUAL
-    </span>
-  </div>
+          <span
+            style={{
+              color: "#63ffb3",
+              fontWeight: 700,
+            }}
+          >
+            MANUAL
+          </span>
+        </div>
 
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      fontSize: "13px",
-    }}
-  >
-    <span>Input</span>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: "13px",
+          }}
+        >
+          <span>Input</span>
 
-    <span style={{ color: "#8ee8ff" }}>
-      Keyboard
-    </span>
-  </div>
-</div>
+          <span
+            style={{
+              color: "#8ee8ff",
+            }}
+          >
+            Keyboard
+          </span>
+        </div>
+      </div>
 
-<div
-  style={{
-    background: "#1d222b",
-    borderRadius: "10px",
-    padding: "14px",
-    marginBottom: "18px",
-  }}
->
-  <div
-    style={{
-      color: "#f4b942",
-      fontWeight: 700,
-      marginBottom: "10px",
-    }}
-  >
-    Mission Progress
-  </div>
+      {/* MISSION */}
 
-  <div
-    style={{
-      height: "8px",
-      background: "#313844",
-      borderRadius: "20px",
-      overflow: "hidden",
-      marginBottom: "8px",
-    }}
-  >
-    <div
-      style={{
-        width: "0%",
-        height: "100%",
-        background: "#13c4ff",
-      }}
-    />
-  </div>
+      <div
+        style={{
+          background: "#1d222b",
+          borderRadius: "10px",
+          padding: "14px",
+          marginBottom: "18px",
+        }}
+      >
+        <div
+          style={{
+            color: "#f4b942",
+            fontWeight: 700,
+            marginBottom: "10px",
+          }}
+        >
+          Mission Progress
+        </div>
 
-  <div
-    style={{
-      fontSize: "12px",
-      color: "#9ca3af",
-    }}
-  >
-    Waiting for mission...
-  </div>
-</div>
+        <div
+          style={{
+            height: "8px",
+            background: "#313844",
+            borderRadius: "20px",
+            overflow: "hidden",
+            marginBottom: "8px",
+          }}
+        >
+          <div
+            style={{
+              width: "0%",
+              height: "100%",
+              background: "#13c4ff",
+            }}
+          />
+        </div>
 
-<div
-  style={{
-    background: "#1d222b",
-    borderRadius: "10px",
-    padding: "14px",
-    marginBottom: "18px",
-  }}
->
-  <div
-    style={{
-      color: "#f4b942",
-      fontWeight: 700,
-      marginBottom: "12px",
-    }}
-  >
-    Event Log
-  </div>
+        <div
+          style={{
+            fontSize: "12px",
+            color: "#9ca3af",
+          }}
+        >
+          Waiting for mission...
+        </div>
+      </div>
 
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "8px",
-      fontSize: "12px",
-      color: "#c9ced8",
-      maxHeight: "140px",
-      overflowY: "auto",
-    }}
-  >
-    <div>🟢 System initialized</div>
-    <div>🟢 Robot loaded</div>
-    <div>🟢 TCP synchronized</div>
-    <div>🟢 Waiting for command...</div>
-  </div>
-</div>
+      {/* EVENT LOG */}
+
+      <div
+        style={{
+          background: "#1d222b",
+          borderRadius: "10px",
+          padding: "14px",
+          marginBottom: "18px",
+        }}
+      >
+        <div
+          style={{
+            color: "#f4b942",
+            fontWeight: 700,
+            marginBottom: "12px",
+          }}
+        >
+          Event Log
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+            maxHeight: "160px",
+            overflowY: "auto",
+          }}
+        >
+          {logs.length === 0 && (
+            <div
+              style={{
+                fontSize: "12px",
+                color: "#9ca3af",
+              }}
+            >
+              Waiting for first event...
+            </div>
+          )}
+
+          {logs.map((log) => (
+            <div
+              key={log.id}
+              style={{
+                fontSize: "12px",
+                lineHeight: 1.5,
+              }}
+            >
+              <span
+                style={{
+                  color: "#63ffb3",
+                }}
+              >
+                {log.time}
+              </span>
+
+              {"  "}
+
+              <span>{log.message}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* JOINTS */}
 
