@@ -38,7 +38,6 @@ export default class SceneManager {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
-
     this.renderer.setSize(
       container.clientWidth,
       container.clientHeight
@@ -95,13 +94,12 @@ export default class SceneManager {
       tcp.add(this.tcpGizmo.object);
 
       const worldPos = new THREE.Vector3();
+
       tcp.updateWorldMatrix(true, false);
       tcp.getWorldPosition(worldPos);
 
       this.tcpTrail.addPoint(worldPos);
     }
-
-    console.log("Robot Loaded");
   }
 
   public setJoint(index: number, angle: number) {
@@ -113,6 +111,25 @@ export default class SceneManager {
 
     const worldPos = new THREE.Vector3();
 
+    tcp.updateWorldMatrix(true, false);
+    tcp.getWorldPosition(worldPos);
+
+    this.tcpTrail.addPoint(worldPos);
+  }
+
+  // ✅ NEW
+  public home() {
+    this.controller.home();
+
+    this.tcpTrail.clear();
+
+    const tcp = this.controller.getTCPFrame();
+
+    if (!tcp) return;
+
+    const worldPos = new THREE.Vector3();
+
+    tcp.updateWorldMatrix(true, false);
     tcp.getWorldPosition(worldPos);
 
     this.tcpTrail.addPoint(worldPos);
