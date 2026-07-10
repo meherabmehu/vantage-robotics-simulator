@@ -19,7 +19,7 @@ export default function LeftControlPanel({
   return (
     <div
       style={{
-        width: "280px",
+        width: "320px",
         flexShrink: 0,
         background: "#232933",
         borderRadius: "12px",
@@ -82,73 +82,95 @@ export default function LeftControlPanel({
   </div>
 
   <div
+  style={{
+    display: "grid",
+    gap: "8px",
+    marginBottom: "10px",
+  }}
+>
+  <input
+    placeholder="X"
+    defaultValue="0.55"
     style={{
-      display: "grid",
-      gridTemplateColumns: "45px 1fr",
-      gap: "8px",
-      alignItems: "center",
-      marginBottom: "8px",
+      flex: 1,
+      minWidth: 0,
+      padding: "8px",
+      borderRadius: "6px",
+      background: "#11161d",
+      border: "1px solid #3a3f4b",
+      color: "white",
     }}
-  >
-    <span>X</span>
+  />
 
-    <input
-      type="number"
-      placeholder="0.000"
-      style={{
-        padding: "6px",
-        borderRadius: "6px",
-        border: "1px solid #444",
-        background: "#11161d",
-        color: "white",
-      }}
-    />
-
-    <span>Y</span>
-
-    <input
-      type="number"
-      placeholder="0.000"
-      style={{
-        padding: "6px",
-        borderRadius: "6px",
-        border: "1px solid #444",
-        background: "#11161d",
-        color: "white",
-      }}
-    />
-
-    <span>Z</span>
-
-    <input
-      type="number"
-      placeholder="0.000"
-      style={{
-        padding: "6px",
-        borderRadius: "6px",
-        border: "1px solid #444",
-        background: "#11161d",
-        color: "white",
-      }}
-    />
-  </div>
-
-  <div
+  <input
+    placeholder="Y"
+    defaultValue="0.00"
     style={{
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: "8px",
-      marginTop: "12px",
+      flex: 1,
+      minWidth: 0,
+      padding: "8px",
+      borderRadius: "6px",
+      background: "#11161d",
+      border: "1px solid #3a3f4b",
+      color: "white",
     }}
-  >
-    <button>
-      GO
-    </button>
+  />
 
-    <button>
-      RESET
-    </button>
-  </div>
+  <input
+    placeholder="Z"
+    defaultValue="0.30"
+    style={{
+      padding: "8px",
+      borderRadius: "6px",
+      background: "#11161d",
+      border: "1px solid #3a3f4b",
+      color: "white",
+    }}
+  />
+</div>
+
+<label
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    color: "#c9ced8",
+    fontSize: "13px",
+    marginBottom: "10px",
+  }}
+>
+  <input type="checkbox" defaultChecked />
+  Constrain stylus tip-down (-Z)
+</label>
+
+<div
+  style={{
+    background: "#11161d",
+    border: "1px solid #00c78c",
+    color: "#63ffb3",
+    borderRadius: "6px",
+    padding: "6px 10px",
+    fontSize: "12px",
+    marginBottom: "10px",
+  }}
+>
+  Reachable • 3 iterations
+</div>
+
+<button
+  style={{
+    width: "100%",
+    padding: "10px",
+    background: "#0ea5c6",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: 600,
+  }}
+>
+  GO
+</button>
 </div>
 
 {/* AUTONOMOUS PIN */}
