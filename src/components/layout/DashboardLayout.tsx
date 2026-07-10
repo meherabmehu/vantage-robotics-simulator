@@ -1,3 +1,4 @@
+import RobotViewport from "../robot/RobotViewport";
 export default function DashboardLayout() {
   return (
     <div className="app">
@@ -27,11 +28,7 @@ export default function DashboardLayout() {
       <main className="viewport">
 
         <div className="viewer">
-
-          <h2>Industrial Robot Simulator</h2>
-
-          <p>3D Viewport Coming Soon...</p>
-
+            <RobotViewport />
         </div>
 
       </main>
