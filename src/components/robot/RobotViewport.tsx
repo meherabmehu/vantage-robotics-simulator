@@ -82,15 +82,96 @@ export default function RobotViewport() {
       {/* CENTER */}
 
       <div
-        ref={viewportRef}
-        style={{
-          flex: 1,
-          minWidth: 0,
-          borderRadius: "12px",
-          overflow: "hidden",
-          background: "#181c22",
-        }}
-      />
+  style={{
+    flex: 1,
+    minWidth: 0,
+    position: "relative",
+    borderRadius: "12px",
+    overflow: "hidden",
+    background: "#181c22",
+  }}
+>
+  <div
+    ref={viewportRef}
+    style={{
+      width: "100%",
+      height: "100%",
+    }}
+  />
+
+  {/* FPS */}
+
+  <div
+    style={{
+      position: "absolute",
+      top: 18,
+      left: 18,
+      background: "#11161d",
+      border: "1px solid #263240",
+      borderRadius: "8px",
+      padding: "8px 14px",
+      color: "#dbe5ef",
+      fontSize: "13px",
+      pointerEvents: "none",
+    }}
+  >
+    <div
+      style={{
+        color: "#9ca3af",
+        fontSize: "11px",
+      }}
+    >
+      FPS
+    </div>
+
+    <div
+      style={{
+        color: "#67ff90",
+        fontWeight: 700,
+        marginTop: 2,
+      }}
+    >
+      111
+    </div>
+  </div>
+
+  {/* Camera Position */}
+
+  <div
+    style={{
+      position: "absolute",
+      top: 82,
+      left: 18,
+      background: "#11161d",
+      border: "1px solid #263240",
+      borderRadius: "8px",
+      padding: "10px 14px",
+      color: "#dbe5ef",
+      fontSize: "13px",
+      pointerEvents: "none",
+      minWidth: "180px",
+    }}
+  >
+    <div
+      style={{
+        color: "#9ca3af",
+        marginBottom: 6,
+        fontSize: "11px",
+      }}
+    >
+      Camera position
+    </div>
+
+    <div
+      style={{
+        color: "#8ee8ff",
+        fontWeight: 600,
+      }}
+    >
+      X 1.15&nbsp;&nbsp;|&nbsp;&nbsp;Y 0.95&nbsp;&nbsp;|&nbsp;&nbsp;Z 1.25
+    </div>
+  </div>
+</div>
 
       {/* RIGHT */}
 
