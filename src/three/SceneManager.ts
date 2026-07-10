@@ -35,7 +35,6 @@ export default class SceneManager {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
-
     this.renderer.setSize(
       container.clientWidth,
       container.clientHeight
@@ -66,7 +65,6 @@ export default class SceneManager {
     this.scene.add(this.zUpRoot);
 
     this.controller = new RobotController();
-
     this.tcpGizmo = new TCPGizmo(0.08);
 
     this.loadRobot();
@@ -81,7 +79,19 @@ export default class SceneManager {
 
     this.zUpRoot.add(robot);
 
-    this.tcpGizmo.addTo(robot);
+    const tcp = this.controller.getTCPFrame();
+
+    if (tcp) {
+      console.log("TCP Frame Found:", tcp.name);
+
+      this.tcpGizmo.object.position.set(0, 0, 0);
+
+      tcp.add(this.tcpGizmo.object);
+    } else {
+      console.warn("TCP Frame NOT FOUND");
+    }
+
+    console.log("Robot Loaded");
   }
 
   public setJoint(index: number, angle: number) {
@@ -114,7 +124,6 @@ export default class SceneManager {
     window.removeEventListener("resize", this.onResize);
 
     this.controls.dispose();
-
     this.renderer.dispose();
   }
 }
