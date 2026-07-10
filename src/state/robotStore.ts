@@ -15,6 +15,9 @@ interface RobotState {
     position: THREE.Vector3,
     rotation: THREE.Euler
   ) => void;
+
+  // NEW
+  resetRobot: () => void;
 }
 
 export const useRobotStore = create<RobotState>((set) => ({
@@ -37,12 +40,22 @@ export const useRobotStore = create<RobotState>((set) => ({
 
   setAllJoints: (values) =>
     set({
-      joints: values,
+      joints: [...values],
     }),
 
   setTCP: (position, rotation) =>
     set({
       tcpPosition: position.clone(),
       tcpRotation: rotation.clone(),
+    }),
+
+  // NEW
+  resetRobot: () =>
+    set({
+      joints: [0, 0, 0, 0, 0, 0, 0],
+
+      tcpPosition: new THREE.Vector3(),
+
+      tcpRotation: new THREE.Euler(),
     }),
 }));
