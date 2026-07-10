@@ -4,6 +4,7 @@ import RobotController from "./RobotController";
 import TCPGizmo from "./TCPGizmo";
 import TCPTrail from "./TCPTrail";
 import CameraController from "./CameraController";
+import TargetGizmo from "./TargetGizmo";
 
 export default class SceneManager {
   private scene: THREE.Scene;
@@ -20,6 +21,9 @@ export default class SceneManager {
 
   private tcpGizmo: TCPGizmo;
   private tcpTrail: TCPTrail;
+
+  // NEW
+  private targetGizmo: TargetGizmo;
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -56,9 +60,9 @@ export default class SceneManager {
 
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
+
     this.controls.target.set(0, 0.5, 0);
 
-    // NEW
     this.cameraController = new CameraController(
       this.camera,
       this.controls
@@ -67,14 +71,22 @@ export default class SceneManager {
     this.scene.add(new THREE.GridHelper(4, 40));
     this.scene.add(new THREE.AxesHelper(0.5));
 
-    this.scene.add(new THREE.AmbientLight(0xffffff, 1.4));
+    this.scene.add(
+      new THREE.AmbientLight(0xffffff, 1.4)
+    );
 
-    const light = new THREE.DirectionalLight(0xffffff, 2);
+    const light = new THREE.DirectionalLight(
+      0xffffff,
+      2
+    );
+
     light.position.set(2, 4, 3);
+
     this.scene.add(light);
 
     this.zUpRoot = new THREE.Group();
     this.zUpRoot.rotation.x = -Math.PI / 2;
+
     this.scene.add(this.zUpRoot);
 
     this.controller = new RobotController();
@@ -83,6 +95,10 @@ export default class SceneManager {
 
     this.tcpTrail = new TCPTrail();
     this.tcpTrail.addTo(this.scene);
+
+    // NEW
+    this.targetGizmo = new TargetGizmo(0.12);
+    this.scene.add(this.targetGizmo.object);
 
     this.loadRobot();
 
@@ -98,18 +114,21 @@ export default class SceneManager {
 
     const tcp = this.controller.getTCPFrame();
 
-    if (tcp) {
-      this.tcpGizmo.object.position.set(0, 0, 0);
+    if (!tcp) return;
 
-      tcp.add(this.tcpGizmo.object);
+    this.tcpGizmo.object.position.set(0, 0, 0);
 
-      const worldPos = new THREE.Vector3();
+    tcp.add(this.tcpGizmo.object);
 
-      tcp.updateWorldMatrix(true, false);
-      tcp.getWorldPosition(worldPos);
+    const worldPos = new THREE.Vector3();
 
-      this.tcpTrail.addPoint(worldPos);
-    }
+    tcp.updateWorldMatrix(true, false);
+    tcp.getWorldPosition(worldPos);
+
+    this.tcpTrail.addPoint(worldPos);
+
+    // NEW
+    this.targetGizmo.setPosition(worldPos);
   }
 
   public setJoint(index: number, angle: number) {
@@ -125,6 +144,9 @@ export default class SceneManager {
     tcp.getWorldPosition(worldPos);
 
     this.tcpTrail.addPoint(worldPos);
+
+    // Target follows TCP for now
+    this.targetGizmo.setPosition(worldPos);
   }
 
   public home() {
@@ -142,11 +164,9 @@ export default class SceneManager {
     tcp.getWorldPosition(worldPos);
 
     this.tcpTrail.addPoint(worldPos);
-  }
 
-  // ==========================
-  // Camera Presets
-  // ==========================
+    this.targetGizmo.setPosition(worldPos);
+  }
 
   public frontView() {
     this.cameraController.front();
@@ -172,8 +192,6 @@ export default class SceneManager {
     this.cameraController.iso();
   }
 
-  // ==========================
-
   public getJointCount() {
     return this.controller.getJointCount();
   }
@@ -197,7 +215,10 @@ export default class SceneManager {
   };
 
   public dispose() {
-    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener(
+      "resize",
+      this.onResize
+    );
 
     this.tcpTrail.dispose();
 
