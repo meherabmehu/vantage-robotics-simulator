@@ -2,6 +2,7 @@ import CartesianPanel from "./CartesianPanel";
 import IKDebugPanel from "./IKDebugPanel";
 import CartesianController from "../../core/CartesianController";
 import SceneManager from "../../three/SceneManager";
+import VirtualJoystick from "./VirtualJoystick";
 
 interface Props {
   scene: SceneManager | null;
@@ -225,78 +226,34 @@ export default function LeftControlPanel({
   </div>
 </div>
 
-{/* JOYSTICK */}
+      {/* JOYSTICK */}
 
-<div
-  style={{
-    background: "#1d222b",
-    borderRadius: "10px",
-    padding: "14px",
-    marginBottom: "18px",
+<VirtualJoystick
+  onUp={() => {
+    CartesianController.moveYPositive();
+    refreshTarget();
   }}
->
-  <div
-    style={{
-      color: "#f4b942",
-      fontWeight: 700,
-      marginBottom: "12px",
-    }}
-  >
-    JOYSTICK
-  </div>
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr",
-      gap: "8px",
-      justifyItems: "center",
-      alignItems: "center",
-    }}
-  >
-    <div />
-
-    <button>▲</button>
-
-    <div />
-
-    <button>◀</button>
-
-    <button>●</button>
-
-    <button>▶</button>
-
-    <div />
-
-    <button>▼</button>
-
-    <div />
-  </div>
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gap: "8px",
-      marginTop: "10px",
-    }}
-  >
-    <button>Z+</button>
-
-    <button>Z−</button>
-  </div>
-
-  <div
-    style={{
-      marginTop: "10px",
-      fontSize: "12px",
-      color: "#9ca3af",
-      textAlign: "center",
-    }}
-  >
-    Virtual joystick (integration next)
-  </div>
-</div>
+  onDown={() => {
+    CartesianController.moveYNegative();
+    refreshTarget();
+  }}
+  onLeft={() => {
+    CartesianController.moveXNegative();
+    refreshTarget();
+  }}
+  onRight={() => {
+    CartesianController.moveXPositive();
+    refreshTarget();
+  }}
+  onZPlus={() => {
+    CartesianController.moveZPositive();
+    refreshTarget();
+  }}
+  onZMinus={() => {
+    CartesianController.moveZNegative();
+    refreshTarget();
+  }}
+/>  
 
       {/* CAMERA */}
 
