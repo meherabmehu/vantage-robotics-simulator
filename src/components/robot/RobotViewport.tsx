@@ -16,7 +16,6 @@ export default function RobotViewport() {
     if (!viewportRef.current) return;
 
     const scene = new SceneManager(viewportRef.current);
-
     sceneRef.current = scene;
 
     keyboardRef.current = new KeyboardController(
@@ -31,9 +30,7 @@ export default function RobotViewport() {
 
       () => {
         scene.home();
-
         MotionManager.home();
-
         resetRobot();
       }
     );
@@ -42,7 +39,6 @@ export default function RobotViewport() {
 
     return () => {
       keyboardRef.current?.detach();
-
       scene.dispose();
     };
   }, [resetRobot]);
@@ -52,15 +48,12 @@ export default function RobotViewport() {
     value: number
   ) => {
     MotionManager.setJoint(index, value);
-
     sceneRef.current?.setJoint(index, value);
   };
 
   const handleHome = () => {
     sceneRef.current?.home();
-
     MotionManager.home();
-
     resetRobot();
   };
 
@@ -96,7 +89,7 @@ export default function RobotViewport() {
           style={{
             width: "100%",
             padding: "10px",
-            marginBottom: "18px",
+            marginBottom: "12px",
             background: "#f4b942",
             color: "#111",
             border: "none",
@@ -107,6 +100,41 @@ export default function RobotViewport() {
         >
           HOME
         </button>
+
+        {/* Camera Presets */}
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "8px",
+            marginBottom: "18px",
+          }}
+        >
+          <button onClick={() => sceneRef.current?.isoView()}>
+            ISO
+          </button>
+
+          <button onClick={() => sceneRef.current?.frontView()}>
+            FRONT
+          </button>
+
+          <button onClick={() => sceneRef.current?.backView()}>
+            BACK
+          </button>
+
+          <button onClick={() => sceneRef.current?.topView()}>
+            TOP
+          </button>
+
+          <button onClick={() => sceneRef.current?.leftView()}>
+            LEFT
+          </button>
+
+          <button onClick={() => sceneRef.current?.rightView()}>
+            RIGHT
+          </button>
+        </div>
 
         <JointPanel onJointChange={handleJointChange} />
       </div>
