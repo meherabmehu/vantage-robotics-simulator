@@ -28,6 +28,17 @@ export default class RobotController {
     return JOINT_NAMES.length;
   }
 
+  // ✅ NEW
+  public getTCPFrame(): THREE.Object3D | null {
+    if (!this.robot) return null;
+
+    return (
+      this.robot.links?.["stylus_tip"] ??
+      this.robot.frames?.["stylus_tip"] ??
+      null
+    );
+  }
+
   public setJoint(index: number, angle: number) {
     if (!this.robot) return;
 

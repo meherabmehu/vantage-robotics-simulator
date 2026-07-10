@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import RobotController from "./RobotController";
+import TCPGizmo from "./TCPGizmo";
 
 export default class SceneManager {
   private scene: THREE.Scene;
@@ -12,6 +13,7 @@ export default class SceneManager {
   private controller: RobotController;
 
   private zUpRoot: THREE.Group;
+  private tcpGizmo: TCPGizmo;
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -56,18 +58,16 @@ export default class SceneManager {
     this.scene.add(new THREE.AmbientLight(0xffffff, 1.4));
 
     const light = new THREE.DirectionalLight(0xffffff, 2);
-
     light.position.set(2, 4, 3);
-
     this.scene.add(light);
 
     this.zUpRoot = new THREE.Group();
-
     this.zUpRoot.rotation.x = -Math.PI / 2;
-
     this.scene.add(this.zUpRoot);
 
     this.controller = new RobotController();
+
+    this.tcpGizmo = new TCPGizmo(0.08);
 
     this.loadRobot();
 
@@ -80,7 +80,8 @@ export default class SceneManager {
     const robot = await this.controller.load();
 
     this.zUpRoot.add(robot);
-    console.log("Children:", robot.children);
+
+    this.tcpGizmo.addTo(robot);
   }
 
   public setJoint(index: number, angle: number) {
