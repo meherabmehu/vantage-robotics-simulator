@@ -28,7 +28,6 @@ export default class RobotController {
     return JOINT_NAMES.length;
   }
 
-  // ✅ NEW
   public getTCPFrame(): THREE.Object3D | null {
     if (!this.robot) return null;
 
@@ -38,6 +37,46 @@ export default class RobotController {
       null
     );
   }
+
+  // ==========================
+  // NEW
+  // ==========================
+
+  public getTCPPosition(): THREE.Vector3 {
+    const tcp = this.getTCPFrame();
+
+    if (!tcp) {
+      return new THREE.Vector3();
+    }
+
+    const position = new THREE.Vector3();
+
+    tcp.updateWorldMatrix(true, false);
+
+    tcp.getWorldPosition(position);
+
+    return position;
+  }
+
+  public getTCPRotation(): THREE.Euler {
+    const tcp = this.getTCPFrame();
+
+    if (!tcp) {
+      return new THREE.Euler();
+    }
+
+    const quaternion = new THREE.Quaternion();
+
+    tcp.updateWorldMatrix(true, false);
+
+    tcp.getWorldQuaternion(quaternion);
+
+    return new THREE.Euler().setFromQuaternion(
+      quaternion
+    );
+  }
+
+  // ==========================
 
   public setJoint(index: number, angle: number) {
     if (!this.robot) return;
