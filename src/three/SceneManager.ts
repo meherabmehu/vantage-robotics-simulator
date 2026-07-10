@@ -5,6 +5,7 @@ import TCPGizmo from "./TCPGizmo";
 import TCPTrail from "./TCPTrail";
 import CameraController from "./CameraController";
 import TargetGizmo from "./TargetGizmo";
+import CartesianController from "../core/CartesianController";
 
 export default class SceneManager {
   private scene: THREE.Scene;
@@ -22,7 +23,6 @@ export default class SceneManager {
   private tcpGizmo: TCPGizmo;
   private tcpTrail: TCPTrail;
 
-  // NEW
   private targetGizmo: TargetGizmo;
 
   constructor(container: HTMLDivElement) {
@@ -60,7 +60,6 @@ export default class SceneManager {
 
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
-
     this.controls.target.set(0, 0.5, 0);
 
     this.cameraController = new CameraController(
@@ -81,12 +80,10 @@ export default class SceneManager {
     );
 
     light.position.set(2, 4, 3);
-
     this.scene.add(light);
 
     this.zUpRoot = new THREE.Group();
     this.zUpRoot.rotation.x = -Math.PI / 2;
-
     this.scene.add(this.zUpRoot);
 
     this.controller = new RobotController();
@@ -96,7 +93,6 @@ export default class SceneManager {
     this.tcpTrail = new TCPTrail();
     this.tcpTrail.addTo(this.scene);
 
-    // NEW
     this.targetGizmo = new TargetGizmo(0.12);
     this.scene.add(this.targetGizmo.object);
 
@@ -127,8 +123,9 @@ export default class SceneManager {
 
     this.tcpTrail.addPoint(worldPos);
 
-    // NEW
-    this.targetGizmo.setPosition(worldPos);
+    // Target starts at origin (independent)
+    CartesianController.reset();
+    this.refreshTarget();
   }
 
   public setJoint(index: number, angle: number) {
@@ -145,8 +142,7 @@ export default class SceneManager {
 
     this.tcpTrail.addPoint(worldPos);
 
-    // Target follows TCP for now
-    this.targetGizmo.setPosition(worldPos);
+    // Target no longer follows TCP
   }
 
   public home() {
@@ -165,8 +161,25 @@ export default class SceneManager {
 
     this.tcpTrail.addPoint(worldPos);
 
-    this.targetGizmo.setPosition(worldPos);
+    CartesianController.reset();
+    this.refreshTarget();
   }
+
+  // ==========================
+  // Target
+  // ==========================
+
+  public refreshTarget() {
+    const position = CartesianController.getPosition();
+    const rotation = CartesianController.getRotation();
+
+    this.targetGizmo.setPosition(position);
+    this.targetGizmo.setRotation(rotation);
+  }
+
+  // ==========================
+  // Camera
+  // ==========================
 
   public frontView() {
     this.cameraController.front();
