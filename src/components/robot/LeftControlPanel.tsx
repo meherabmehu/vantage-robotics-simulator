@@ -3,6 +3,8 @@ import IKDebugPanel from "./IKDebugPanel";
 import CartesianController from "../../core/CartesianController";
 import SceneManager from "../../three/SceneManager";
 import VirtualJoystick from "./VirtualJoystick";
+import { useMissionStore } from "../../state/missionStore";
+import { useModeStore } from "../../state/modeStore";
 
 interface Props {
   scene: SceneManager | null;
@@ -16,6 +18,16 @@ export default function LeftControlPanel({
   const refreshTarget = () => {
     scene?.refreshTarget();
   };
+  const setMissionState = useMissionStore(
+  (s) => s.setState
+);
+
+const setMissionProgress = useMissionStore(
+  (s) => s.setProgress
+);
+const setInput = useModeStore(
+  (s) => s.setInput
+);
 
   return (
     <div
@@ -159,6 +171,12 @@ export default function LeftControlPanel({
 </div>
 
 <button
+  onClick={() => {
+    setMissionState("Planning");
+    setMissionProgress(10);
+
+    refreshTarget();
+  }}
   style={{
     width: "100%",
     padding: "10px",
@@ -230,26 +248,33 @@ export default function LeftControlPanel({
 
 <VirtualJoystick
   onUp={() => {
+    setInput("Joystick");
+    setInput("Joystick");
     CartesianController.moveYPositive();
     refreshTarget();
   }}
   onDown={() => {
+    setInput("Joystick");
     CartesianController.moveYNegative();
     refreshTarget();
   }}
   onLeft={() => {
+    setInput("Joystick");
     CartesianController.moveXNegative();
     refreshTarget();
   }}
   onRight={() => {
+    setInput("Joystick");
     CartesianController.moveXPositive();
     refreshTarget();
   }}
   onZPlus={() => {
+    setInput("Joystick");
     CartesianController.moveZPositive();
     refreshTarget();
   }}
   onZMinus={() => {
+    setInput("Joystick");
     CartesianController.moveZNegative();
     refreshTarget();
   }}

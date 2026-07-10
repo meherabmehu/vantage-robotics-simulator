@@ -1,6 +1,8 @@
 import { useRobotStore } from "../../state/robotStore";
 import { useEventLogStore } from "../../state/eventLogStore";
 import JointPanel from "./JointPanel";
+import { useModeStore } from "../../state/modeStore";
+import { useMissionStore } from "../../state/missionStore";
 
 interface Props {
   onJointChange: (index: number, value: number) => void;
@@ -14,6 +16,16 @@ export default function RightStatusPanel({
   const tcpRotation = useRobotStore((s) => s.tcpRotation);
 
   const logs = useEventLogStore((s) => s.logs);
+  const mode = useModeStore((s) => s.mode);
+
+  const input = useModeStore((s) => s.input);
+  const progress = useMissionStore(
+  (s) => s.progress
+);
+
+const missionState = useMissionStore(
+  (s) => s.state
+);
 
   return (
     <div
@@ -203,7 +215,7 @@ export default function RightStatusPanel({
               fontWeight: 700,
             }}
           >
-            MANUAL
+            {mode}
           </span>
         </div>
 
@@ -221,7 +233,7 @@ export default function RightStatusPanel({
               color: "#8ee8ff",
             }}
           >
-            Keyboard
+            {input}
           </span>
         </div>
       </div>
@@ -257,7 +269,7 @@ export default function RightStatusPanel({
         >
           <div
             style={{
-              width: "0%",
+              width: `${progress}%`,
               height: "100%",
               background: "#13c4ff",
             }}
@@ -270,7 +282,7 @@ export default function RightStatusPanel({
             color: "#9ca3af",
           }}
         >
-          Waiting for mission...
+          {missionState}
         </div>
       </div>
 

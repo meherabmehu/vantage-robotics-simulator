@@ -3,6 +3,8 @@ import { useRobotStore } from "../../state/robotStore";
 import SceneManager from "../../three/SceneManager";
 import KeyboardController from "../../input/KeyboardController";
 import MotionManager from "../../core/MotionManager";
+import { useModeStore } from "../../state/modeStore";
+import { useMissionStore } from "../../state/missionStore";
 import LeftControlPanel from "./LeftControlPanel";
 import RightStatusPanel from "./RightStatusPanel";
 
@@ -12,6 +14,12 @@ export default function RobotViewport() {
   const keyboardRef = useRef<KeyboardController | null>(null);
 
   const resetRobot = useRobotStore((state) => state.resetRobot);
+  const setInput = useModeStore((s) => s.setInput);
+  const setMissionState =
+  useMissionStore((s) => s.setState);
+
+const setMissionProgress =
+  useMissionStore((s) => s.setProgress);
 
   useEffect(() => {
     if (!viewportRef.current) return;
@@ -22,6 +30,7 @@ export default function RobotViewport() {
 
     keyboardRef.current = new KeyboardController(
       (jointIndex, delta) => {
+        setInput("Keyboard");
         const angle = MotionManager.moveJoint(
           jointIndex,
           delta
@@ -49,12 +58,19 @@ export default function RobotViewport() {
     index: number,
     value: number
   ) => {
+    setMissionState("Executing");
+
+    setMissionProgress(40);
     MotionManager.setJoint(index, value);
 
     sceneRef.current?.setJoint(index, value);
   };
 
   const handleHome = () => {
+    setInput("Dashboard");
+    setMissionState("Waiting");
+
+    setMissionProgress(0);
     sceneRef.current?.home();
 
     MotionManager.home();
