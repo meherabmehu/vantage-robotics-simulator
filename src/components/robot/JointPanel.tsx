@@ -5,13 +5,13 @@ interface JointPanelProps {
 }
 
 const jointNames = [
-  "Joint 1",
-  "Joint 2",
-  "Joint 3",
-  "Joint 4",
-  "Joint 5",
-  "Joint 6",
-  "Stylus",
+  "J1 Base yaw",
+  "J2 Shoulder",
+  "J3 Elbow",
+  "J4 Forearm roll",
+  "J5 Wrist pitch",
+  "J6 Tool roll",
+  "J7 Stylus pitch",
 ];
 
 export default function JointPanel({
@@ -25,20 +25,33 @@ export default function JointPanel({
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: "12px",
+        gap: "18px",
       }}
     >
       {jointNames.map((name, index) => (
         <div key={index}>
           <label
-            style={{
-              display: "block",
-              marginBottom: "6px",
-              color: "#d6d6d6",
-              fontSize: "13px",
-            }}
-          >
-            {name}
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    color: "#d8dde8",
+    fontSize: "13px",
+    marginBottom: "6px",
+    fontWeight: 500,
+  }}
+>
+            <>
+  <span>{name}</span>
+
+  <span
+    style={{
+      color: "#7fdfff",
+      fontWeight: 700,
+    }}
+  >
+    {(joints[index] * 57.2958).toFixed(1)}°
+  </span>
+</>
           </label>
 
           <input
@@ -54,8 +67,10 @@ export default function JointPanel({
               onJointChange(index, value);
             }}
             style={{
-              width: "100%",
-            }}
+  width: "100%",
+  accentColor: "#13c4ff",
+  cursor: "pointer",
+}}
           />
         </div>
       ))}
