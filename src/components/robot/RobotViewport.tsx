@@ -67,27 +67,37 @@ export default function RobotViewport() {
   return (
     <div
       style={{
-        display: "grid",
-        gridTemplateColumns: "260px 1fr 280px",
-        gap: "16px",
+        display: "flex",
         width: "100%",
         height: "100%",
+        gap: "16px",
+        overflow: "hidden",
       }}
     >
-      {/* LEFT CONTROL PANEL */}
+      {/* ================= LEFT PANEL ================= */}
 
       <div
         style={{
+          width: "260px",
+          flexShrink: 0,
+
           background: "#232933",
+
           borderRadius: "12px",
+
           padding: "18px",
-          overflowY: "auto",
+
+          display: "flex",
+          flexDirection: "column",
+
+          overflow: "hidden",
         }}
       >
         <h3
           style={{
             color: "#f4b942",
             marginBottom: "18px",
+            textAlign: "center",
           }}
         >
           Joint Control
@@ -143,6 +153,8 @@ export default function RobotViewport() {
           </button>
         </div>
 
+        {/* Fixed Top Controls */}
+
         <CartesianPanel
           onMoveXPositive={() => {
             CartesianController.moveXPositive();
@@ -172,35 +184,61 @@ export default function RobotViewport() {
 
         <IKDebugPanel />
 
-        <JointPanel onJointChange={handleJointChange} />
+        {/* Scroll Only Here */}
+
+        <div
+          style={{
+            flex: 1,
+            overflowY: "auto",
+            marginTop: "12px",
+            paddingRight: "6px",
+          }}
+        >
+          <JointPanel
+            onJointChange={handleJointChange}
+          />
+        </div>
       </div>
 
-      {/* ROBOT VIEW */}
+      {/* ================= ROBOT VIEW ================= */}
 
       <div
         ref={viewportRef}
         style={{
-          width: "100%",
-          height: "100%",
+          flex: 1,
+          minWidth: 0,
+
           borderRadius: "12px",
+
           overflow: "hidden",
+
           background: "#181c22",
         }}
       />
 
-      {/* RIGHT PANEL */}
+      {/* ================= RIGHT PANEL ================= */}
 
       <div
         style={{
+          width: "280px",
+
+          flexShrink: 0,
+
           background: "#232933",
+
           borderRadius: "12px",
+
           padding: "18px",
+
           color: "white",
+
+          overflow: "hidden",
         }}
       >
         <h3
           style={{
             color: "#f4b942",
+            textAlign: "center",
             marginBottom: "20px",
           }}
         >
@@ -210,6 +248,7 @@ export default function RobotViewport() {
         <p
           style={{
             opacity: 0.8,
+            textAlign: "center",
             lineHeight: 1.8,
           }}
         >

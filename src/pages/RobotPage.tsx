@@ -4,8 +4,10 @@ export default function RobotPage() {
   return (
     <div
       style={{
-        width: "100%",
-        height: "100%",
+        flex: 1,
+        display: "flex",
+        overflow: "hidden",
+        padding: 10,
       }}
     >
       <RobotViewport />
