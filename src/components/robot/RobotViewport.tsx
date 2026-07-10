@@ -6,6 +6,7 @@ import CartesianPanel from "./CartesianPanel";
 import KeyboardController from "../../input/KeyboardController";
 import MotionManager from "../../core/MotionManager";
 import CartesianController from "../../core/CartesianController";
+import IKDebugPanel from "./IKDebugPanel";
 
 export default function RobotViewport() {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -67,12 +68,14 @@ export default function RobotViewport() {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "320px 1fr",
-        gap: "20px",
+        gridTemplateColumns: "260px 1fr 280px",
+        gap: "16px",
         width: "100%",
         height: "100%",
       }}
     >
+      {/* LEFT CONTROL PANEL */}
+
       <div
         style={{
           background: "#232933",
@@ -167,8 +170,12 @@ export default function RobotViewport() {
           }}
         />
 
+        <IKDebugPanel />
+
         <JointPanel onJointChange={handleJointChange} />
       </div>
+
+      {/* ROBOT VIEW */}
 
       <div
         ref={viewportRef}
@@ -177,8 +184,42 @@ export default function RobotViewport() {
           height: "100%",
           borderRadius: "12px",
           overflow: "hidden",
+          background: "#181c22",
         }}
       />
+
+      {/* RIGHT PANEL */}
+
+      <div
+        style={{
+          background: "#232933",
+          borderRadius: "12px",
+          padding: "18px",
+          color: "white",
+        }}
+      >
+        <h3
+          style={{
+            color: "#f4b942",
+            marginBottom: "20px",
+          }}
+        >
+          Robot Status
+        </h3>
+
+        <p
+          style={{
+            opacity: 0.8,
+            lineHeight: 1.8,
+          }}
+        >
+          Status panel redesign
+          <br />
+          will be added
+          <br />
+          in the next step.
+        </p>
+      </div>
     </div>
   );
 }
