@@ -3,12 +3,15 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import RobotController from "./RobotController";
 import TCPGizmo from "./TCPGizmo";
 import TCPTrail from "./TCPTrail";
+import CameraController from "./CameraController";
 
 export default class SceneManager {
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
   private controls: OrbitControls;
+
+  private cameraController: CameraController;
 
   private container: HTMLDivElement;
   private controller: RobotController;
@@ -38,6 +41,7 @@ export default class SceneManager {
     });
 
     this.renderer.setPixelRatio(window.devicePixelRatio);
+
     this.renderer.setSize(
       container.clientWidth,
       container.clientHeight
@@ -53,6 +57,12 @@ export default class SceneManager {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.08;
     this.controls.target.set(0, 0.5, 0);
+
+    // NEW
+    this.cameraController = new CameraController(
+      this.camera,
+      this.controls
+    );
 
     this.scene.add(new THREE.GridHelper(4, 40));
     this.scene.add(new THREE.AxesHelper(0.5));
@@ -117,7 +127,6 @@ export default class SceneManager {
     this.tcpTrail.addPoint(worldPos);
   }
 
-  // ✅ NEW
   public home() {
     this.controller.home();
 
@@ -134,6 +143,36 @@ export default class SceneManager {
 
     this.tcpTrail.addPoint(worldPos);
   }
+
+  // ==========================
+  // Camera Presets
+  // ==========================
+
+  public frontView() {
+    this.cameraController.front();
+  }
+
+  public backView() {
+    this.cameraController.back();
+  }
+
+  public leftView() {
+    this.cameraController.left();
+  }
+
+  public rightView() {
+    this.cameraController.right();
+  }
+
+  public topView() {
+    this.cameraController.top();
+  }
+
+  public isoView() {
+    this.cameraController.iso();
+  }
+
+  // ==========================
 
   public getJointCount() {
     return this.controller.getJointCount();
