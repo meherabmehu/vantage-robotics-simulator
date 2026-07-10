@@ -5,8 +5,11 @@ import VectorError from "../math/VectorError";
 export interface IKResult {
   success: boolean;
   joints: number[];
+
   positionError: THREE.Vector3;
   rotationError: THREE.Vector3;
+
+  positionErrorNorm: number;
 }
 
 export default class IKSolver {
@@ -27,24 +30,34 @@ export default class IKSolver {
       ...currentJoints,
     ]);
 
-    const positionError = VectorError.position(
-      currentPosition,
-      targetPosition
-    );
+    const positionError =
+      VectorError.position(
+        currentPosition,
+        targetPosition
+      );
 
-    const rotationError = VectorError.rotation(
-      currentRotation,
-      targetRotation
-    );
+    const rotationError =
+      VectorError.rotation(
+        currentRotation,
+        targetRotation
+      );
+
+    const positionErrorNorm =
+      VectorError.norm(positionError);
 
     const success =
-      VectorError.norm(positionError) < 1e-4;
+      positionErrorNorm < 1e-4;
 
     return {
       success,
+
       joints,
+
       positionError,
+
       rotationError,
+
+      positionErrorNorm,
     };
   }
 }

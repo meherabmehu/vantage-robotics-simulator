@@ -5,7 +5,10 @@ import TCPGizmo from "./TCPGizmo";
 import TCPTrail from "./TCPTrail";
 import CameraController from "./CameraController";
 import TargetGizmo from "./TargetGizmo";
+
 import CartesianController from "../core/CartesianController";
+import IKSolver from "../core/ik/IKSolver";
+import { useRobotStore } from "../state/robotStore";
 
 export default class SceneManager {
   private scene: THREE.Scene;
@@ -24,6 +27,9 @@ export default class SceneManager {
   private tcpTrail: TCPTrail;
 
   private targetGizmo: TargetGizmo;
+
+  // NEW
+  private ik: IKSolver;
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -80,13 +86,17 @@ export default class SceneManager {
     );
 
     light.position.set(2, 4, 3);
+
     this.scene.add(light);
 
     this.zUpRoot = new THREE.Group();
     this.zUpRoot.rotation.x = -Math.PI / 2;
+
     this.scene.add(this.zUpRoot);
 
     this.controller = new RobotController();
+
+    this.ik = new IKSolver();
 
     this.tcpGizmo = new TCPGizmo(0.08);
 
@@ -123,7 +133,6 @@ export default class SceneManager {
 
     this.tcpTrail.addPoint(worldPos);
 
-    // Target starts at origin (independent)
     CartesianController.reset();
     this.refreshTarget();
   }
@@ -141,8 +150,6 @@ export default class SceneManager {
     tcp.getWorldPosition(worldPos);
 
     this.tcpTrail.addPoint(worldPos);
-
-    // Target no longer follows TCP
   }
 
   public home() {
@@ -175,6 +182,32 @@ export default class SceneManager {
 
     this.targetGizmo.setPosition(position);
     this.targetGizmo.setRotation(rotation);
+
+    this.debugIK();
+  }
+
+  // ==========================
+  // IK Debug
+  // ==========================
+
+  public debugIK() {
+    const result = this.ik.solve(
+      [...useRobotStore.getState().joints],
+
+      this.controller.getTCPPosition(),
+      this.controller.getTCPRotation(),
+
+      CartesianController.getPosition(),
+      CartesianController.getRotation()
+    );
+
+    console.clear();
+
+    console.log("========== IK ==========");
+    console.log("Position Error:", result.positionError);
+    console.log("Distance:", result.positionErrorNorm);
+    console.log("Solved:", result.success);
+    console.log("========================");
   }
 
   // ==========================
