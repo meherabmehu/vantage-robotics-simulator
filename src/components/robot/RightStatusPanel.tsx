@@ -266,6 +266,42 @@ export default function RightStatusPanel({
   </div>
 </div>
 
+<div
+  style={{
+    background: "#1d222b",
+    borderRadius: "10px",
+    padding: "14px",
+    marginBottom: "18px",
+  }}
+>
+  <div
+    style={{
+      color: "#f4b942",
+      fontWeight: 700,
+      marginBottom: "12px",
+    }}
+  >
+    Event Log
+  </div>
+
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px",
+      fontSize: "12px",
+      color: "#c9ced8",
+      maxHeight: "140px",
+      overflowY: "auto",
+    }}
+  >
+    <div>🟢 System initialized</div>
+    <div>🟢 Robot loaded</div>
+    <div>🟢 TCP synchronized</div>
+    <div>🟢 Waiting for command...</div>
+  </div>
+</div>
+
       {/* JOINTS */}
 
       <h3
