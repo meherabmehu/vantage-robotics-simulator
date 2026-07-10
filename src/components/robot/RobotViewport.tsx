@@ -2,10 +2,12 @@ import { useEffect, useRef } from "react";
 import { useRobotStore } from "../../state/robotStore";
 import SceneManager from "../../three/SceneManager";
 import JointPanel from "./JointPanel";
+import KeyboardController from "../../input/KeyboardController";
 
 export default function RobotViewport() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<SceneManager | null>(null);
+  const keyboardRef = useRef<KeyboardController | null>(null);
 
   const resetRobot = useRobotStore((state) => state.resetRobot);
 
@@ -13,13 +15,33 @@ export default function RobotViewport() {
     if (!viewportRef.current) return;
 
     const scene = new SceneManager(viewportRef.current);
-
     sceneRef.current = scene;
 
+    keyboardRef.current = new KeyboardController(
+      (jointIndex, delta) => {
+        // ✅ সবসময় Zustand-এর latest state নাও
+        const state = useRobotStore.getState();
+
+        const next = [...state.joints];
+        next[jointIndex] += delta;
+
+        state.setJoint(jointIndex, next[jointIndex]);
+
+        scene.setJoint(jointIndex, next[jointIndex]);
+      },
+      () => {
+        scene.home();
+        resetRobot();
+      }
+    );
+
+    keyboardRef.current.attach();
+
     return () => {
+      keyboardRef.current?.detach();
       scene.dispose();
     };
-  }, []);
+  }, [resetRobot]);
 
   const handleJointChange = (
     index: number,
@@ -30,7 +52,6 @@ export default function RobotViewport() {
 
   const handleHome = () => {
     sceneRef.current?.home();
-
     resetRobot();
   };
 
