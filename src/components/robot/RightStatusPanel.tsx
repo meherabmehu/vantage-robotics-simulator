@@ -8,10 +8,10 @@ interface Props {
 export default function RightStatusPanel({
   onJointChange,
 }: Props) {
-  const joints = useRobotStore((s) => s.joints);
   const tcpPosition = useRobotStore(
     (s) => s.tcpPosition
   );
+
   const tcpRotation = useRobotStore(
     (s) => s.tcpRotation
   );
@@ -21,19 +21,13 @@ export default function RightStatusPanel({
       style={{
         width: "300px",
         flexShrink: 0,
-
         background: "#232933",
-
         borderRadius: "12px",
-
         padding: "18px",
-
         display: "flex",
         flexDirection: "column",
-
         overflowY: "auto",
         overflowX: "hidden",
-
         color: "white",
       }}
     >
@@ -46,37 +40,42 @@ export default function RightStatusPanel({
       >
         Robot Status
       </h3>
-      <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "18px",
-  }}
->
-  <span
-    style={{
-      fontSize: "13px",
-      color: "#9ca3af",
-      fontWeight: 600,
-    }}
-  >
-    TCP • BASE FRAME
-  </span>
 
-  <span
-    style={{
-      background: "#0d3d2d",
-      color: "#58f59b",
-      padding: "3px 10px",
-      borderRadius: "20px",
-      fontSize: "11px",
-      fontWeight: 700,
-    }}
-  >
-    IDLE
-  </span>
-</div>
+      {/* HEADER */}
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "18px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "13px",
+            color: "#9ca3af",
+            fontWeight: 600,
+          }}
+        >
+          TCP • BASE FRAME
+        </span>
+
+        <span
+          style={{
+            background: "#0d3d2d",
+            color: "#58f59b",
+            padding: "3px 10px",
+            borderRadius: "20px",
+            fontSize: "11px",
+            fontWeight: 700,
+          }}
+        >
+          IDLE
+        </span>
+      </div>
+
+      {/* TCP POSITION */}
 
       <div
         style={{
@@ -103,66 +102,46 @@ export default function RightStatusPanel({
         </div>
       </div>
 
+      {/* REACH BAR */}
+
       <div
-  style={{
-    marginBottom: "18px",
-  }}
->
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      marginBottom: "6px",
-      fontSize: "12px",
-      color: "#9ca3af",
-    }}
-  >
-    <span>Reach from shoulder</span>
-    <span>586 / 1151 mm</span>
-  </div>
+        style={{
+          marginBottom: "18px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: "6px",
+            fontSize: "12px",
+            color: "#9ca3af",
+          }}
+        >
+          <span>Reach from shoulder</span>
 
-  <div
-    style={{
-      height: "6px",
-      background: "#313844",
-      borderRadius: "20px",
-      overflow: "hidden",
-    }}
-  >
-    <div
-      style={{
-        width: "51%",
-        height: "100%",
-        background: "#13c4ff",
-      }}
-    />
-  </div>
-</div>
+          <span>586 / 1151 mm</span>
+        </div>
 
-<div
-  style={{
-    background: "#1d222b",
-    padding: "12px",
-    borderRadius: "8px",
-    marginBottom: "16px",
-  }}
->
-  <strong>TCP Rotation</strong>
+        <div
+          style={{
+            height: "6px",
+            background: "#313844",
+            borderRadius: "20px",
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: "51%",
+              height: "100%",
+              background: "#13c4ff",
+            }}
+          />
+        </div>
+      </div>
 
-  <div
-    style={{
-      marginTop: "10px",
-      fontSize: "13px",
-      lineHeight: 1.8,
-    }}
-  >
-    RX : {tcpRotation.x.toFixed(2)}
-    <br />
-    RY : {tcpRotation.y.toFixed(2)}
-    <br />
-    RZ : {tcpRotation.z.toFixed(2)}
-  </div>
-</div>
+      {/* TCP ROTATION */}
 
       <div
         style={{
@@ -172,7 +151,7 @@ export default function RightStatusPanel({
           marginBottom: "16px",
         }}
       >
-        <strong>Joint Values</strong>
+        <strong>TCP Rotation</strong>
 
         <div
           style={{
@@ -181,23 +160,27 @@ export default function RightStatusPanel({
             lineHeight: 1.8,
           }}
         >
-          {joints.map((v, i) => (
-            <div key={i}>
-              J{i + 1}: {v.toFixed(2)}
-            </div>
-          ))}
+          RX : {tcpRotation.x.toFixed(2)}
+          <br />
+          RY : {tcpRotation.y.toFixed(2)}
+          <br />
+          RZ : {tcpRotation.z.toFixed(2)}
         </div>
       </div>
 
-      <div
+      {/* JOINTS */}
+
+      <h3
         style={{
-          marginTop: "12px",
+          color: "#f4b942",
+          marginBottom: "12px",
+          fontSize: "18px",
         }}
       >
-        <JointPanel
-          onJointChange={onJointChange}
-        />
-      </div>
+        JOINTS
+      </h3>
+
+      <JointPanel onJointChange={onJointChange} />
     </div>
   );
 }
