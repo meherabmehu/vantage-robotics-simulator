@@ -1,32 +1,241 @@
-# React + TypeScript + Vite
+# 🤖 Vantage Robotics Simulator
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern browser-based industrial robotics simulator built with **React**, **TypeScript**, **Three.js**, and **Vite**. The platform provides an interactive environment for robot visualization, forward and inverse kinematics, motion control, mission execution, and real-time robot state monitoring.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# 📌 Project Overview
 
-## React Compiler
+Vantage Robotics Simulator is a web-based robotic simulation platform that enables users to interact with an industrial robotic arm directly from the browser.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The simulator combines robotics algorithms with modern web technologies to provide an intuitive interface for controlling robot joints, Cartesian movement, trajectory visualization, and mission management.
 
-## Expanding the Oxlint configuration
+This project is suitable for robotics education, industrial automation research, and robot control visualization.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+---
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+# ✨ Features
+
+- 🤖 Industrial Robot Simulation
+- 📐 Forward Kinematics (FK)
+- 🎯 Inverse Kinematics (IK)
+- 🦾 Joint Angle Control
+- 📍 Cartesian Position Control
+- 🕹️ Virtual Joystick Control
+- 📡 Live Robot State Monitoring
+- 📋 Mission Management
+- 📝 Event Logging
+- 🎥 Interactive 3D Robot Visualization
+- 🎯 TCP Gizmo & Trail Visualization
+- 📦 Robot Model Loading (URDF)
+- ⚡ Real-Time Motion Updates
+- 🌐 Browser-Based Simulation
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
+
+- React
+- TypeScript
+- Vite
+
+## Robotics
+
+- Forward Kinematics
+- Inverse Kinematics
+- Jacobian Solver
+- Cartesian Motion Control
+- Motion Planning
+
+## 3D Graphics
+
+- Three.js
+
+## State Management
+
+- Zustand
+
+## Development Tools
+
+- npm
+- Git
+- GitHub
+
+---
+
+# 📂 Project Structure
+
+```text
+vantage-robotics-simulator/
+│
+├── public/
+│   ├── stylus_arm.urdf
+│   └── icons.svg
+│
+├── src/
+│   ├── components/
+│   │   ├── robot/
+│   │   └── layout/
+│   │
+│   ├── core/
+│   │   ├── fk/
+│   │   ├── ik/
+│   │   ├── math/
+│   │   └── input/
+│   │
+│   ├── pages/
+│   ├── state/
+│   ├── three/
+│   ├── configs/
+│   ├── models/
+│   └── assets/
+│
+├── package.json
+├── vite.config.ts
+├── README.md
+└── .gitignore
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+# 🔄 System Workflow
+
+```text
+User Input
+      │
+      ▼
+Control Panels
+      │
+      ▼
+Motion Controller
+      │
+      ▼
+Forward / Inverse Kinematics
+      │
+      ▼
+Robot State Manager
+      │
+      ▼
+Three.js Renderer
+      │
+      ▼
+Interactive Robot Visualization
+```
+
+---
+
+# 🖥 Core Modules
+
+### Robot Control
+
+- Joint Control Panel
+- Cartesian Control Panel
+- Virtual Joystick
+- Motion Command Dispatcher
+- Motion Manager
+
+### Kinematics
+
+- Forward Kinematics
+- Inverse Kinematics
+- Jacobian Calculation
+- Numerical Optimization
+
+### Visualization
+
+- Robot Viewport
+- TCP Gizmo
+- TCP Trail
+- Camera Controller
+- Scene Manager
+
+### State Management
+
+- Robot Store
+- Mission Store
+- Mode Store
+- Event Log Store
+
+---
+
+# 🚀 Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/meherabmehu/vantage-robotics-simulator.git
+```
+
+Move into the project directory
+
+```bash
+cd vantage-robotics-simulator
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run development server
+
+```bash
+npm run dev
+```
+
+Create production build
+
+```bash
+npm run build
+```
+
+Preview production build
+
+```bash
+npm run preview
+```
+
+---
+
+# 🎯 Future Improvements
+
+- Collision Detection
+- Path Planning
+- Trajectory Optimization
+- Multi-Robot Simulation
+- ROS2 Integration
+- Digital Twin Support
+- Physics-Based Simulation
+- Industrial PLC Communication
+- WebXR / VR Support
+
+---
+
+# 📸 Preview
+
+You can add screenshots or GIFs demonstrating:
+
+- Robot Dashboard
+- Robot Viewport
+- Joint Control Panel
+- Cartesian Controller
+- 3D Robot Simulation
+
+---
+
+# 👨‍💻 Author
+
+**Md. Meherab Hossain Talukder**
+
+- GitHub: https://github.com/meherabmehu
+- LinkedIn: https://www.linkedin.com/in/meherab-talukder-5046a141b/
+- Kaggle: https://www.kaggle.com/mdmeherabhossain
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
