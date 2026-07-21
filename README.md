@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="src/assets/hero.png" alt="Vantage Robotics Simulator" width="100%">
+</p>
+
 # 🤖 Vantage Robotics Simulator
 
 A modern browser-based industrial robotics simulator built with **React**, **TypeScript**, **Three.js**, and **Vite**. The platform provides an interactive environment for robot visualization, forward and inverse kinematics, motion control, mission execution, and real-time robot state monitoring.
